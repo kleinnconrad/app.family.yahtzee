@@ -4,6 +4,7 @@ import { ThemeToggle } from './components/ThemeToggle';
 import { DieView } from './components/DieView';
 import { ScoreSheetView } from './components/ScoreSheetView';
 import { SetupScreen } from './components/SetupScreen';
+import { ExitGameButton } from './components/ExitGameButton';
 import { ScoreEngine } from './logic/ScoreEngine';
 import confetti from 'canvas-confetti';
 
@@ -148,6 +149,7 @@ const GameRoot = () => {
   
   return (
     <div className="App">
+      {state.gamePhase !== GamePhase.SETUP && state.gamePhase !== GamePhase.GAME_OVER && <ExitGameButton />}
       <header style={{ textAlign: 'center', padding: '20px 0' }}>
         <h1 style={{ color: 'var(--primary-color)', fontSize: '3rem' }}>Kids Yahtzee</h1>
       </header>
