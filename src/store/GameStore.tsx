@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from 'react';
+import { createContext, useContext, useEffect, useReducer } from 'react';
 import type { ReactNode } from 'react';
 import type { DiceArray } from '../logic/ScoreEngine';
 
@@ -158,13 +158,48 @@ export const gameReducer = (state: GameState, action: GameAction): GameState => 
   }
 };
 
+// Persist the game in localStorage so an accidental page refresh doesn't wipe it.
+const STORAGE_KEY = 'yahtzee-game-state-v1';
+
+const loadState = (): GameState => {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return initialState;
+    const saved = JSON.parse(raw) as Partial<GameState>;
+    const isValid =
+      Array.isArray(saved.players) &&
+      Array.isArray(saved.diceValues) && saved.diceValues.length === 5 &&
+      Array.isArray(saved.heldDice) && saved.heldDice.length === 5 &&
+      typeof saved.rollsLeft === 'number' &&
+      typeof saved.currentPlayerIndex === 'number' &&
+      Object.values(GamePhase).includes(saved.gamePhase as GamePhase) &&
+      Object.values(Theme).includes(saved.theme as Theme);
+    return isValid ? { ...initialState, ...saved } : initialState;
+  } catch {
+    return initialState;
+  }
+};
+
+const saveState = (state: GameState) => {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch {
+    // Storage unavailable (e.g. private mode) - the game still works, just isn't persisted.
+  }
+};
+
 const GameContext = createContext<{
   state: GameState;
   dispatch: React.Dispatch<GameAction>;
 } | undefined>(undefined);
 
 export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [state, dispatch] = useReducer(gameReducer, initialState);
+  const [state, dispatch] = useReducer(gameReducer, undefined, loadState);
+
+  useEffect(() => {
+    saveState(state);
+  }, [state]);
+
   return (
     <GameContext.Provider value={{ state, dispatch }}>
       {children}
