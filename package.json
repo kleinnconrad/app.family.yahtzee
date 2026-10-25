@@ -1,7 +1,7 @@
 {
   "name": "kniffel",
   "private": true,
-  "homepage": "https://kleinnconrad.github.io/yahtzee",
+  "homepage": "https://kleinnconrad.github.io/app.family.yahtzee",
   "version": "0.0.0",
   "type": "module",
   "scripts": {

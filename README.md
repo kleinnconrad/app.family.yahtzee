@@ -29,7 +29,7 @@ The objective of the game is to score the highest possible number of points by r
 
 ### Play online (No installation required)
 The absolute easiest way to play is to visit the live website on any device:
-👉 **[Play Kids Yahtzee Here!](https://kleinnconrad.github.io/yahtzee)**
+👉 **[Play Kids Yahtzee Here!](https://kleinnconrad.github.io/app.family.yahtzee)**
 
 > **Hint for Android/iOS:** When visiting the link in your mobile browser, open your browser menu and tap **"Add to Home screen"**. It will install just like a real app and work completely offline!
 
